@@ -359,7 +359,15 @@
   .keypad .key small { display: block; font-size: .55rem; font-weight: 600; color: #4a5a6e; margin-top: 1px; }
   .keypad .dir { background: linear-gradient(180deg, #fff, #cfe3ea); }
 
-  @media (max-height: 560px) and (orientation: landscape) { .phone { zoom: .72; } }
+  .phone.playing { touch-action: none; }
+  .key { -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  @media (pointer: coarse) {
+    .keypad { gap: 10px 12px; }
+    .keypad .key { height: 44px; font-size: 1.1rem; }
+    .soft { height: 36px; }
+    .navi { height: 44px; }
+  }
+  @media (max-height: 560px) and (orientation: landscape) { .phone { zoom: .66; } }
   @media (max-width: 340px) { .phone { zoom: .92; } }
 
   .play-copy h3 { margin: 0 0 .8rem; color: var(--snow); font: 500 1.5rem/1.25 var(--display); }
@@ -572,7 +580,7 @@
           <div class="lcd">
             <div class="lcd-bar"><span id="lcd-score">0000</span><span id="lcd-bonus"></span><span id="lcd-sound">♪ ON</span></div>
             <canvas id="snake" width="168" height="120" aria-label="Snake game screen"></canvas>
-            <div class="lcd-msg" id="lcd-msg"><div><big>MOMO SNAKE</big>PRESS 5 TO START</div></div>
+            <div class="lcd-msg" id="lcd-msg"><div><big>MOMO SNAKE</big><span id="lcd-hint">PRESS 5 TO START</span></div></div>
           </div>
         </div>
         <div class="softkeys">
@@ -597,13 +605,13 @@
       </div>
 
       <div class="play-copy">
-        <h3>Snake, like on the old Nokia phones.</h3>
+        <h3>Snake. Relive the memories of childhood.</h3>
         <p>This snake eats momos. Every fifth momo, a mountain shows up for a few seconds. Grab it for bonus points. The edges wrap around, so the only thing that can stop you is your own tail.</p>
         <ul class="controls">
+          <li><kbd>Swipe</kbd><span>anywhere on the phone to steer, no need to lift your finger</span></li>
+          <li><kbd>2 4 6 8</kbd><span>tap the keys to steer</span></li>
           <li><kbd>Arrows / WASD</kbd><span>steer on a keyboard</span></li>
-          <li><kbd>Swipe</kbd><span>steer on a phone screen</span></li>
-          <li><kbd>2 4 6 8</kbd><span>steer with the keypad</span></li>
-          <li><kbd>5 or Space</kbd><span>start and pause</span></li>
+          <li><kbd>Tap screen / 5</kbd><span>start and pause (Space on a keyboard)</span></li>
         </ul>
         <div class="scoreboard">
           <div><b id="score">0</b><span>this round</span></div>
@@ -891,6 +899,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
   const ctx = canvas.getContext("2d");
   const msg = document.getElementById("lcd-msg");
   const show = id => document.getElementById(id);
+  const phone = document.getElementById("phone");
+  const isTouch = window.matchMedia("(pointer: coarse)").matches;
+  const ACT = isTouch ? "TAP" : "PRESS 5";
 
   // Pixel pictures drawn inside one 8x8 cell ("#" = dark pixel)
   const MOMO = ["..#..#..", "...##...", "..####..", ".######.", "########", ".######.", "........", "........"];
@@ -938,7 +949,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
     if (head.x === momo.x && head.y === momo.y) {
       eaten++; score += 1 + Math.floor((150 - speed) / 25);   // faster snake, more points
-      beep(880, .06);
+      beep(880, .06); buzz(18);
       momo = freeCell();
       if (eaten % 5 === 0) bonus = { ...freeCell(), ttl: 40 };
       speed = Math.max(70, speed - 4);
@@ -994,32 +1005,38 @@ document.getElementById("year").textContent = new Date().getFullYear();
     show("momos").textContent = eaten;
   }
 
+  function setState(next) {
+    state = next;
+    phone.classList.toggle("playing", state === "playing");
+  }
   function start() {
     reset(); draw();
     msg.hidden = true;
     show("quip").textContent = "";
-    state = "playing";
+    setState("playing");
     clearTimeout(timer);
     timer = setTimeout(step, speed);
+    const r = phone.getBoundingClientRect();     // on a phone, bring the whole game into view
+    if (isTouch && (r.top < 0 || r.bottom > innerHeight)) phone.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
   }
   function pause() {
     if (state === "playing") {
-      state = "paused"; clearTimeout(timer);
-      msg.innerHTML = "<div><big>PAUSED</big>PRESS 5 TO GO ON</div>"; msg.hidden = false;
+      setState("paused"); clearTimeout(timer);
+      msg.innerHTML = `<div><big>PAUSED</big>${ACT} TO GO ON</div>`; msg.hidden = false;
     } else if (state === "paused") {
-      state = "playing"; msg.hidden = true; timer = setTimeout(step, speed);
+      setState("playing"); msg.hidden = true; timer = setTimeout(step, speed);
     }
   }
   function gameOver() {
-    state = "over"; clearTimeout(timer);
-    beep(220, .25);
+    setState("over"); clearTimeout(timer);
+    beep(220, .25); buzz([90, 60, 90]);
     let line = "";
     if (score > best) {
       best = score; line = "NEW BEST!<br>";
       try { localStorage.setItem("ba-snake-best", best); } catch (e) {}
       show("best").textContent = best;
     }
-    msg.innerHTML = `<div><big>GAME OVER</big>${line}SCORE ${score}<br>PRESS 5 TO PLAY</div>`;
+    msg.innerHTML = `<div><big>GAME OVER</big>${line}SCORE ${score}<br>${ACT} TO PLAY</div>`;
     msg.hidden = false;
     show("quip").textContent = QUIPS[Math.floor(Math.random() * QUIPS.length)];
   }
@@ -1047,6 +1064,12 @@ document.getElementById("year").textContent = new Date().getFullYear();
     }
   }
 
+  // A little vibration on phones that support it, like the old ones
+  function buzz(pattern) {
+    if (!sound || !navigator.vibrate) return;
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+
   // Short beeps, made with the browser's audio (no sound files)
   function wakeAudio() {
     if (audio) return;
@@ -1063,10 +1086,20 @@ document.getElementById("year").textContent = new Date().getFullYear();
     } catch (e) {}
   }
 
-  // Keypad clicks
-  document.getElementById("phone").addEventListener("click", e => {
+  // Keypad: the arrow keys (2 4 6 8) react the moment you touch them.
+  // Other keys wait for the tap to finish, so scrolling past them doesn't start a game.
+  phone.addEventListener("pointerdown", e => {
     const btn = e.target.closest("[data-key]");
-    if (btn) press(btn.dataset.key);
+    if (!btn || !["2", "4", "6", "8"].includes(btn.dataset.key)) return;
+    btn.pressedAt = performance.now();
+    press(btn.dataset.key);
+    if (e.pointerType !== "mouse") buzz(8);
+  });
+  phone.addEventListener("click", e => {
+    const btn = e.target.closest("[data-key]");
+    if (!btn) return;
+    if (performance.now() - (btn.pressedAt || 0) < 800) return;   // already handled on touch
+    press(btn.dataset.key);
   });
 
   // Keyboard: only steals the arrow keys while a game is on screen
@@ -1084,15 +1117,25 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (pad) { pad.classList.add("hit"); setTimeout(() => pad.classList.remove("hit"), 110); }
   });
 
-  // Swipe on the screen
-  let touch = null;
-  canvas.parentElement.addEventListener("touchstart", e => { touch = e.touches[0]; }, { passive: true });
-  canvas.parentElement.addEventListener("touchend", e => {
-    if (!touch) return;
-    const t = e.changedTouches[0], dx = t.clientX - touch.clientX, dy = t.clientY - touch.clientY;
-    touch = null;
-    if (Math.max(Math.abs(dx), Math.abs(dy)) < 18) return press(state === "playing" ? "" : "5");
+  // Swipe anywhere on the phone (except the keys). The snake turns as soon as your
+  // finger has moved a little, and you can keep swiping without lifting it.
+  let anchor = null, swiped = false;
+  phone.addEventListener("touchstart", e => {
+    if (e.target.closest(".keypad, .softkeys")) return;
+    const t = e.touches[0];
+    anchor = { x: t.clientX, y: t.clientY }; swiped = false;
+  }, { passive: true });
+  phone.addEventListener("touchmove", e => {
+    if (!anchor) return;
+    if (state === "playing") e.preventDefault();          // keep the page still while you play
+    const t = e.touches[0], dx = t.clientX - anchor.x, dy = t.clientY - anchor.y;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
     if (Math.abs(dx) > Math.abs(dy)) press(dx > 0 ? "6" : "4"); else press(dy > 0 ? "8" : "2");
+    anchor = { x: t.clientX, y: t.clientY }; swiped = true;
+  }, { passive: false });
+  phone.addEventListener("touchend", e => {
+    if (anchor && !swiped && e.target.closest(".lcd") && state !== "playing") press("5");   // tap the screen to start
+    anchor = null;
   });
 
   // Pause when the game scrolls away or the tab is hidden
@@ -1102,6 +1145,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }, { threshold: 0.35 }).observe(document.getElementById("phone"));
   document.addEventListener("visibilitychange", () => { if (document.hidden && state === "playing") pause(); });
 
+  if (isTouch) show("lcd-hint").textContent = "TAP TO START";
   reset(); draw();
 })();
 </script>
