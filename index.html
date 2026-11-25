@@ -4,15 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bidhan Adhikari, Data & Business Analyst</title>
-<meta name="description" content="Bidhan Adhikari is a data and business analyst (MS Business Analytics, WPI) working in SQL, Python, Excel and Power BI. Projects, analyses, and a game of Snake.">
+<meta name="description" content="Bidhan Adhikari is a data and business analyst (MS Business Analytics, WPI) working in SQL, Python, Excel and Power BI. Projects, published research, analyses, and a game of Snake.">
 <meta name="theme-color" content="#0C1A2B">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230C1A2B'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' font-weight='600' text-anchor='middle' fill='%23F2B65E'%3EBA%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Bidhan Adhikari, Data &amp; Business Analyst">
 <meta property="og:description" content="Finance background, MS in Business Analytics from WPI. Projects in SQL, Python, Excel and Power BI. Plus a game of Snake.">
 <meta property="og:url" content="https://bidhanadhikari.com/">
-<meta property="og:image" content="https://bidhanadhikari.com/bidhan-circle.jpg">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://bidhanadhikari.com/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bidhan Adhikari, Data & Business Analyst. bidhanadhikari.com">
+<meta property="og:site_name" content="Bidhan Adhikari">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://bidhanadhikari.com/og-card.png">
+<link rel="canonical" href="https://bidhanadhikari.com/">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Person", "name": "Bidhan Adhikari", "url": "https://bidhanadhikari.com/",
+ "image": "https://bidhanadhikari.com/bidhan-circle.jpg", "jobTitle": "Data & Business Analyst",
+ "address": {"@type": "PostalAddress", "addressLocality": "Boston", "addressRegion": "MA", "addressCountry": "US"},
+ "alumniOf": [{"@type": "CollegeOrUniversity", "name": "Worcester Polytechnic Institute"}, {"@type": "CollegeOrUniversity", "name": "Tribhuvan University"}],
+ "sameAs": ["https://www.linkedin.com/in/bidhan-adhikari-a67582269", "https://github.com/bidhanadhikari8119", "https://orcid.org/0009-0000-0773-7476"],
+ "knowsAbout": ["SQL", "Python", "Excel", "Power BI", "Tableau", "Machine learning", "Financial analysis"]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..650&family=Instrument+Sans:wght@400..600&family=Silkscreen&display=swap" rel="stylesheet">
@@ -93,6 +107,11 @@
   }
   .nav a:hover { color: var(--snow); transform: translateX(3px); }
   .nav a.active { color: var(--saffron); }
+  .nav .resume-link {
+    display: inline-block; margin-top: .9rem; padding: .45rem .8rem; border-radius: 8px;
+    color: var(--saffron); border: 1px solid rgba(242, 182, 94, .5);
+  }
+  .nav .resume-link:hover { background: var(--saffron); color: var(--ink); transform: none; }
   .social { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.1rem; }
   .social a { display: block; color: var(--mist); transition: color .2s, transform .2s; }
   .social a:hover { color: var(--saffron); transform: translateY(-2px); }
@@ -283,6 +302,7 @@
   .card-top a { color: var(--mist); }
   .card-top a:hover { color: var(--saffron); }
   .card-top a svg { width: 21px; height: 21px; display: block; }
+  .card-top .soon { font-size: .74rem; font-weight: 600; color: var(--mist-2); border: 1px dashed rgba(157, 176, 197, .35); border-radius: 999px; padding: .25rem .65rem; }
   .card h3 { margin: 0 0 .6rem; color: var(--snow); font: 500 1.22rem/1.3 var(--display); }
   .card h3 a { text-decoration: none; }
   .card h3 a:hover { color: var(--saffron); }
@@ -298,6 +318,22 @@
   .ext { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; text-decoration: none; color: var(--saffron); }
   .ext:hover { text-decoration: underline; text-underline-offset: 3px; }
   .ext svg { width: 15px; height: 15px; }
+
+  /* ---------- Research ---------- */
+  .paper {
+    display: grid; gap: 1.6rem; padding: clamp(1.3rem, 3vw, 2rem); border-radius: 18px;
+    background: rgba(18, 40, 64, .72); border: 1px solid rgba(124, 207, 219, .14); border-left: 3px solid var(--saffron);
+  }
+  @media (min-width: 860px) { .paper { grid-template-columns: 12rem 1fr; gap: 2.4rem; } }
+  .paper-side svg { width: 46px; height: 46px; color: var(--saffron); margin-bottom: .8rem; }
+  .paper-side .journal { font-size: .88rem; color: var(--mist); line-height: 1.5; }
+  .paper-side .journal b { display: block; color: var(--snow); font-weight: 600; }
+  .paper h3 { margin: 0 0 .4rem; color: var(--snow); font: 500 clamp(1.3rem, 2.4vw, 1.6rem)/1.25 var(--display); }
+  .paper h3 a { text-decoration: none; }
+  .paper h3 a:hover { color: var(--saffron); }
+  .paper .authors { font-size: .88rem; color: var(--mist-2); margin-bottom: 1rem; }
+  .paper .finding { margin: .2rem 0 0; padding-left: .9rem; border-left: 2px solid var(--saffron); color: var(--snow); }
+  .paper-links { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; margin-top: 1.3rem; }
 
   /* ---------- Analyses ---------- */
   .intro { margin: -1rem 0 2rem; max-width: 38rem; }
@@ -437,9 +473,11 @@
       <li><a href="#about">/about</a></li>
       <li><a href="#experience">/experience</a></li>
       <li><a href="#projects">/projects</a></li>
+      <li><a href="#research">/research</a></li>
       <li><a href="#analyses">/analyses</a></li>
       <li><a href="#play">/play</a></li>
       <li><a href="#contact">/contact</a></li>
+      <li><a class="resume-link" href="Bidhan-Adhikari-Resume.pdf" target="_blank" rel="noopener">Résumé ↓</a></li>
     </ul>
   </nav>
   <ul class="social">
@@ -470,6 +508,10 @@
         <a class="btn btn-main" href="mailto:bidhan.adhikari007@gmail.com">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
           Say hi
+        </a>
+        <a class="btn btn-ghost" href="Bidhan-Adhikari-Resume.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>
+          Résumé
         </a>
         <a class="btn btn-ghost" href="#play">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M9 6.5h6v5H9z"/><path d="M10 15h.01M12 15h.01M14 15h.01M10 18h.01M12 18h.01M14 18h.01"/></svg>
@@ -530,8 +572,8 @@
           <h3>Graduate Assistant <span>at Worcester Polytechnic Institute (SBDI)</span></h3>
           <p class="meta">Sep 2024 to Dec 2024, Worcester, MA</p>
           <ul class="points">
-            <li>Created a digital audit framework for <strong>5 small businesses</strong>, structuring scattered performance data and cutting evaluation time <strong>40%</strong>.</li>
-            <li>Examined website traffic and engagement data to find underperforming areas, with recommendations that improved online visibility <strong>20%</strong>.</li>
+            <li>Designed an audit framework to assess <strong>5 small businesses</strong> on the same measures, cutting evaluation time <strong>40%</strong>.</li>
+            <li>Audited website traffic and engagement data, ranked weak spots by impact, and targeted the top few, improving online visibility <strong>20%</strong>.</li>
           </ul>
           <ul class="tags"><li>Web analytics</li><li>Data auditing</li><li>Reporting</li></ul>
         </div>
@@ -539,10 +581,10 @@
           <h3>Business Development Analyst <span>at Drishya Engineering Service</span></h3>
           <p class="meta">Apr 2022 to Jul 2024, Pokhara, Nepal</p>
           <ul class="points">
-            <li>Analyzed LinkedIn and Facebook campaign performance to sharpen audience segmentation and targeting, reducing customer acquisition costs <strong>15%</strong>.</li>
-            <li>Built an automated Excel reporting suite (dynamic dashboards, pivot tables, variance analysis) that leadership used to track KPIs and cut operational costs <strong>14%</strong>.</li>
-            <li>Cleaned market and property data from government databases to identify <strong>three</strong> high-potential segments, growing the project pipeline <strong>13%</strong> year over year.</li>
-            <li>Consolidated 4 to 5 monthly reports across engineering and finance into executive summaries that guided resource allocation and hiring.</li>
+            <li>Built an Excel KPI and variance model after seeing most calls were gut feel; leadership used it to spot cost overruns and cut operating costs <strong>14%</strong>.</li>
+            <li>Analyzed market and property data from government databases to compare segments, and recommended the <strong>three</strong> worth going after, growing the project pipeline <strong>13%</strong> year over year.</li>
+            <li>Compared LinkedIn and Facebook campaign results by audience, found which segments cost the most per customer, and shifted targeting away from them, cutting customer acquisition cost <strong>15%</strong>.</li>
+            <li>Summarized 4 to 5 monthly engineering and finance reports into one update on what changed and why, for staffing and budget calls.</li>
           </ul>
           <ul class="tags"><li>Excel</li><li>Pivot tables</li><li>Variance analysis</li><li>Campaign analytics</li><li>Market segmentation</li></ul>
         </div>
@@ -550,9 +592,9 @@
           <h3>Investment Analyst Intern <span>at Pokhara Investment Company</span></h3>
           <p class="meta">Oct 2021 to Mar 2022, Pokhara, Nepal</p>
           <ul class="points">
-            <li>Ran fundamental analysis of financial statements and ratios, plus technical analysis of price levels and chart patterns, supporting a <strong>16%</strong> increase in investment and an <strong>18%</strong> return.</li>
-            <li>Evaluated macroeconomic trends to shape investment strategy, contributing to a <strong>10%</strong> year-over-year profit increase.</li>
-            <li>Designed an Excel dashboard that brought client investments and returns into one view, improving client satisfaction <strong>30%</strong>.</li>
+            <li>Evaluated financial statements and ratios to judge which stocks were worth holding, then used technical signals (price levels, divergence, chart patterns) to time entries, supporting a <strong>16%</strong> increase in investment and an <strong>18%</strong> return.</li>
+            <li>Tracked macroeconomic trends and fed them into investment strategy, contributing to a <strong>10%</strong> year-over-year profit increase.</li>
+            <li>Consolidated client investments into an Excel dashboard, customized for the top <strong>15</strong> of about 50 clients.</li>
           </ul>
           <ul class="tags"><li>Financial statements</li><li>Ratio analysis</li><li>Technical analysis</li><li>Excel dashboards</li></ul>
         </div>
@@ -565,6 +607,12 @@
     <h2 class="sh"><span>/</span> projects</h2>
     <div id="feature"></div>
     <div class="cards" id="project-cards"></div>
+  </section>
+
+  <!-- ================= RESEARCH (filled from the RESEARCH list in the script) ================= -->
+  <section id="research" class="reveal" aria-label="Research">
+    <h2 class="sh"><span>/</span> research</h2>
+    <div id="research-list"></div>
   </section>
 
   <!-- ================= ANALYSES (filled from the ANALYSES list in the script) ================= -->
@@ -683,36 +731,58 @@ const PROJECTS = [
   {
     title: "NYC real estate price prediction",
     summary: "A pricing model built on New York City property sales to spot listings priced below what the market supports.",
+    // no link yet: the card says "Code coming soon". Add  link: "https://github.com/..."  when the repo is up.
     results: [
       ["0.75", "R² of the pricing model"],
       ["$206K", "average undervaluation per listing"],
     ],
     detail: "40,000+ sales and 15+ location and timing features. Sale date and micro-location explained 24% of price variance.",
     tools: ["Python", "pandas", "scikit-learn", "LightGBM"],
-    link: GITHUB,
   },
   {
     title: "NYC building energy analytics",
     badge: "Capstone",
-    summary: "Which New York City commercial buildings face carbon penalties under Local Law 97, and how much exposure do they carry?",
+    summary: "Which New York City buildings will pay the most under the Local Law 97 carbon rules, and where should retrofits start?",
     results: [
-      ["85,000+", "building records analyzed"],
-      ["$268", "Local Law 97 penalty per ton of CO₂e"],
+      ["64.6%", "of projected penalties come from 4,470 underperforming buildings"],
+      ["$1.15B", "in penalty savings from a top-1,000 retrofit list (66%)"],
     ],
-    detail: "Built features such as EUI gap and building age, then modeled energy use from OLS through XGBoost.",
-    tools: ["SQL", "Python", "Regression", "XGBoost"],
-    link: GITHUB,
+    detail: "Clustered 85,000+ building records into 6 types in SQL and Python, modeled energy use from OLS up to XGBoost, and priced exposure at $268 per metric ton of CO₂e.",
+    tools: ["SQL", "Python", "K-Means", "XGBoost"],
   },
   {
     title: "Commercial bank efficiency analysis",
-    summary: "Benchmarked how efficiently 20 commercial banks turn resources into results, to guide resource-allocation decisions.",
+    summary: "Benchmarked 20 Nepali commercial banks (staff, deposits and costs against loans, interest income and profit) to test the central bank's push for mergers.",
     results: [
-      ["20", "banks benchmarked"],
-      ["3", "DEA models compared"],
+      ["0.69", "average efficiency score"],
+      ["6 of 20", "banks fully efficient"],
     ],
-    detail: "Automated the frontier calculations with VBA so the three-model benchmark reruns across all 20 banks in one go.",
+    detail: "Super-efficiency models (CRS and VRS) ranked the leaders, with Standard Chartered at 2.11. Solver runs are automated in VBA.",
     tools: ["DEA", "Excel Solver", "VBA"],
     link: "https://github.com/bidhanadhikari8119/nepal-banks-dea-efficiency",
+  },
+];
+
+// ---------- Research ----------
+const RESEARCH = [
+  {
+    title: "Investor Satisfaction through Service Quality: Evidence from Pokhara Brokerage Firms",
+    journal: "The Journal of Nepalese Business Studies",
+    issue: "Vol. 17, No. 1, December 2024, pp. 59 to 69",
+    coauthors: "With Nabin Bahadur Adhikari. Peer-reviewed, open access.",
+    question: "Which parts of a stockbroker's service actually make investors satisfied? I surveyed investors in Pokhara and tested reliability, responsiveness and assurance with correlation and multiple regression in SPSS.",
+    results: [
+      ["105", "investors surveyed"],
+      ["44.7%", "of the variation in satisfaction explained (R²)"],
+      ["+0.43", "satisfaction points per point of assurance"],
+    ],
+    finding: "Knowledgeable staff and safe transactions (assurance) matter most, then error-free service (reliability). Faster replies alone made no significant difference.",
+    tools: ["Survey design", "SPSS", "Multiple regression", "Cronbach's alpha"],
+    links: [
+      ["Read the paper", "https://doi.org/10.3126/jnbs.v17i1.75257"],
+      ["Summary on GitHub", "https://github.com/bidhanadhikari8119/investor-satisfaction-research"],
+      ["ORCID", "https://orcid.org/0009-0000-0773-7476"],
+    ],
   },
 ];
 
@@ -728,6 +798,14 @@ const PROJECTS = [
 //    link: "https://github.com/bidhanadhikari8119/your-repo",
 //  },
 const ANALYSES = [
+  {
+    title: "Which credit card customers will miss next month's payment?",
+    date: "Nov 2026",
+    question: "A bank's collections team wants to call the riskiest customers first. I compared a baseline, Logistic Regression and Random Forest on 30,000 customers, and left out sex and marital status because US fair-lending rules don't allow them.",
+    finding: "A Random Forest with a 0.3 cutoff catches 55% of next month's defaulters by calling 25% of customers. Anyone 2+ months late goes to the top of the list: 7 in 10 of them default.",
+    tools: ["Python", "pandas", "scikit-learn", "Random Forest"],
+    link: "https://github.com/bidhanadhikari8119/credit-card-default-prediction",
+  },
 ];
 
 
@@ -799,12 +877,28 @@ if (featured) {
 }
 document.getElementById("project-cards").innerHTML = PROJECTS.filter(p => !p.featured).map(p => `
   <article class="card">
-    <div class="card-top">${FOLDER}${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" aria-label="${p.linkText || "View on GitHub"}">${GH_ICON}</a>` : ""}</div>
+    <div class="card-top">${FOLDER}${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" aria-label="${p.linkText || "View on GitHub"}">${GH_ICON}</a>` : `<span class="soon">Code coming soon</span>`}</div>
     <h3>${p.link ? `<a href="${p.link}" target="_blank" rel="noopener">${p.title}</a>` : p.title}${p.badge ? `<span class="badge">${p.badge}</span>` : ""}</h3>
     <p>${p.summary}</p>
     ${readoutList(p.results)}
     <p>${p.detail}</p>
     ${tagList(p.tools, "stack")}
+  </article>`).join("");
+
+// ---------- Research ----------
+const PAPER_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2.8h8l4 4v14.4H6Z"/><path d="M14 2.8v4h4M9 11h6M9 14h6M9 17h4"/></svg>`;
+document.getElementById("research-list").innerHTML = RESEARCH.map(r => `
+  <article class="paper">
+    <div class="paper-side">${PAPER_ICON}<p class="kicker">Published research</p><div class="journal"><b>${r.journal}</b>${r.issue}</div></div>
+    <div>
+      <h3><a href="${r.links[0][1]}" target="_blank" rel="noopener">${r.title}</a></h3>
+      <p class="authors">${r.coauthors}</p>
+      <p>${r.question}</p>
+      ${readoutList(r.results)}
+      <p class="finding">${r.finding}</p>
+      ${tagList(r.tools)}
+      <div class="paper-links">${r.links.map(([t, u]) => `<a class="ext" href="${u}" target="_blank" rel="noopener">${t} ${ARROW}</a>`).join("")}</div>
+    </div>
   </article>`).join("");
 
 // ---------- Analyses (with tool filters) ----------
@@ -826,7 +920,7 @@ function renderAnalyses(tool) {
 (function renderFilters() {
   const box = document.getElementById("analysis-filters");
   const tools = [...new Set(ANALYSES.flatMap(a => a.tools))];
-  if (tools.length < 2) { box.remove(); return; }
+  if (ANALYSES.length < 3 || tools.length < 2) { box.remove(); return; }   // filters appear once there are a few analyses
   box.innerHTML = ["All", ...tools].map((t, i) =>
     `<button type="button" aria-pressed="${i === 0}" data-tool="${i === 0 ? "" : t}">${t}</button>`).join("");
   box.addEventListener("click", e => {
