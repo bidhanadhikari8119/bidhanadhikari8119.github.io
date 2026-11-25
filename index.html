@@ -161,6 +161,9 @@
     content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%;
     background: var(--glacier); box-shadow: 0 0 0 4px rgba(124, 207, 219, .15); transform: translateY(-1px);
   }
+  .building { margin: .6rem 0 0; font-size: .92rem; color: var(--mist-2); padding-left: 1.05rem; }
+  .building a { color: var(--snow); font-weight: 600; text-decoration: underline; text-decoration-color: rgba(242, 182, 94, .55); text-underline-offset: 3px; }
+  .building a:hover { color: var(--saffron); }
   .cta { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
   .btn {
     display: inline-flex; align-items: center; gap: .55rem; cursor: pointer;
@@ -259,6 +262,7 @@
   .feature h3 { margin: 0 0 .7rem; color: var(--snow); font: 600 clamp(1.6rem, 3vw, 2.1rem)/1.1 var(--display); }
   .feature h3 a { text-decoration: none; }
   .feature h3 a:hover { color: var(--saffron); }
+  .vision { margin: -.2rem 0 .9rem; color: var(--snow); font: italic 400 1.15rem/1.4 var(--display); }
 
   .readouts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.1rem 0; padding: 0; list-style: none; }
   .readouts li { display: flex; flex-direction: column; }
@@ -461,6 +465,7 @@
       <p class="hero-sub">Data &amp; Business Analyst</p>
       <p class="hero-desc">Finance background, MS in Business Analytics from WPI. I work mostly in SQL, Python, Excel and Power BI. From Pokhara, Nepal, now in Boston.</p>
       <p class="status">Open to analyst roles.</p>
+      <p class="building">Also building <a href="https://nepalscape.com" target="_blank" rel="noopener">NepalScape</a>: all of Nepal, the way locals know it.</p>
       <div class="cta">
         <a class="btn btn-main" href="mailto:bidhan.adhikari007@gmail.com">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
@@ -486,7 +491,7 @@
       <div class="prose">
         <p>I started out in finance. Back home in Pokhara, I spent more than two years at an engineering firm reading campaign data, cleaning government property records, and building the Excel reports leadership used to run the business. That work helped cut customer acquisition costs <strong>15%</strong> and operating costs <strong>14%</strong>.</p>
         <p>I then moved to the US for an MS in Business Analytics at Worcester Polytechnic Institute (<strong>4.00 GPA</strong>, May 2026) to go deeper into SQL, Python and machine learning. My capstone modeled energy use across <strong>85,000+</strong> New York City buildings to price their exposure to carbon penalties.</p>
-        <p>On the side, I'm building <a href="https://mynepalinfo.com" target="_blank" rel="noopener">My Nepal Info</a> with a small team, a travel guide to Nepal. I started it because good information about traveling there is scattered and hard to find.</p>
+        <p>On the side, I'm building <a href="https://nepalscape.com" target="_blank" rel="noopener">NepalScape</a> with a small team, a travel guide to Nepal. I started it because good information about traveling there is scattered and hard to find.</p>
         <p class="tools-intro">Tools I use most:</p>
         <ul class="tools">
           <li>SQL (MySQL, SQL Server)</li>
@@ -633,7 +638,7 @@
       <div class="contact-links">
         <a href="https://www.linkedin.com/in/bidhan-adhikari-a67582269" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://github.com/bidhanadhikari8119" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://mynepalinfo.com" target="_blank" rel="noopener">My Nepal Info</a>
+        <a href="https://nepalscape.com" target="_blank" rel="noopener">NepalScape</a>
       </div>
     </div>
   </section>
@@ -656,22 +661,24 @@ const GITHUB = "https://github.com/bidhanadhikari8119";
 
 // ---------- Projects ----------
 // featured: true shows it as the big card at the top (use it for one project)
+// vision is optional: a one-line vision shown under the featured title
 // linkText is optional; it defaults to "View on GitHub"
 const PROJECTS = [
   {
     featured: true,
-    title: "My Nepal Info",
+    title: "NepalScape",
     badge: "Live",
-    summary: "A travel guide to Nepal that I'm building with a small team. Treks, cities, festivals, food, homestays and when to go, all in one place.",
+    vision: "All of Nepal, the way locals know it.",
+    summary: "A travel guide to Nepal that I'm building with a small team. Treks, cities, festivals, food, homestays and when to go, across all seven provinces.",
     results: [
       ["7", "provinces, each with its own guide"],
+      ["34", "treks, sorted into four altitude levels"],
       ["44", "community homestays listed"],
-      ["4", "trek levels, sorted by altitude"],
     ],
     detail: "Built in React and hosted on Cloudflare. Live since November 2026, with new pages added as we go.",
     tools: ["React", "Cloudflare", "SEO"],
-    link: "https://mynepalinfo.com",
-    linkText: "Visit mynepalinfo.com",
+    link: "https://nepalscape.com",
+    linkText: "Visit nepalscape.com",
   },
   {
     title: "NYC real estate price prediction",
@@ -756,7 +763,7 @@ const FEATURE_ART = `<svg viewBox="0 0 560 360" aria-hidden="true">
   <rect y="0" width="560" height="38" rx="12" fill="#1b3555"/><rect y="26" width="560" height="12" fill="#1b3555"/>
   <circle cx="22" cy="19" r="5" fill="#F2B65E"/><circle cx="40" cy="19" r="5" fill="#7CCFDB" fill-opacity=".7"/><circle cx="58" cy="19" r="5" fill="#9DB0C5" fill-opacity=".5"/>
   <rect x="86" y="9" width="300" height="20" rx="10" fill="#0e1f33"/>
-  <text x="102" y="23.5" font-family="Instrument Sans, sans-serif" font-size="11.5" fill="#9DB0C5">mynepalinfo.com</text>
+  <text x="102" y="23.5" font-family="Instrument Sans, sans-serif" font-size="11.5" fill="#9DB0C5">nepalscape.com</text>
   <rect x="0" y="38" width="560" height="322" fill="url(#sky)"/>
   <circle cx="452" cy="104" r="26" fill="#F2B65E" fill-opacity=".9"/>
   <g fill="none" stroke="#7CCFDB" stroke-opacity=".22">
@@ -781,6 +788,7 @@ if (featured) {
       <div>
         <p class="kicker">Featured project</p>
         <h3><a href="${featured.link}" target="_blank" rel="noopener">${featured.title}</a>${featured.badge ? `<span class="badge">${featured.badge}</span>` : ""}</h3>
+        ${featured.vision ? `<p class="vision">${featured.vision}</p>` : ""}
         <p>${featured.summary}</p>
         ${readoutList(featured.results)}
         <p>${featured.detail}</p>
