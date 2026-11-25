@@ -580,12 +580,12 @@
           <div class="lcd">
             <div class="lcd-bar"><span id="lcd-score">0000</span><span id="lcd-bonus"></span><span id="lcd-sound">♪ ON</span></div>
             <canvas id="snake" width="168" height="120" aria-label="Snake game screen"></canvas>
-            <div class="lcd-msg" id="lcd-msg"><div><big>MOMO SNAKE</big><span id="lcd-hint">PRESS 5 TO START</span></div></div>
+            <div class="lcd-msg" id="lcd-msg"><div><big>MOMO SNAKE</big><span id="lcd-hint">PRESS SPACE TO START</span></div></div>
           </div>
         </div>
         <div class="softkeys">
-          <button class="key soft" type="button" data-key="start">Start</button>
-          <button class="key navi" type="button" data-key="5" aria-label="Start or pause">5 · GO</button>
+          <button class="key soft" type="button" data-key="new" aria-label="New game">New</button>
+          <button class="key navi" type="button" data-key="go" id="go-key">Start</button>
           <button class="key soft" type="button" data-key="sound">Sound</button>
         </div>
         <div class="keypad">
@@ -593,7 +593,7 @@
           <button class="key dir" type="button" data-key="2" aria-label="Up">2<small>▲</small></button>
           <button class="key" type="button" data-key="3">3</button>
           <button class="key dir" type="button" data-key="4" aria-label="Left">4<small>◀</small></button>
-          <button class="key" type="button" data-key="5" aria-label="Start or pause">5<small>go</small></button>
+          <button class="key" type="button" data-key="5" aria-label="5">5<small>·</small></button>
           <button class="key dir" type="button" data-key="6" aria-label="Right">6<small>▶</small></button>
           <button class="key" type="button" data-key="7">7</button>
           <button class="key dir" type="button" data-key="8" aria-label="Down">8<small>▼</small></button>
@@ -611,7 +611,7 @@
           <li><kbd>Swipe</kbd><span>anywhere on the phone to steer, no need to lift your finger</span></li>
           <li><kbd>2 4 6 8</kbd><span>tap the keys to steer</span></li>
           <li><kbd>Arrows / WASD</kbd><span>steer on a keyboard</span></li>
-          <li><kbd>Tap screen / 5</kbd><span>start and pause (Space on a keyboard)</span></li>
+          <li><kbd>Orange key</kbd><span>start, pause and resume (Space on a keyboard)</span></li>
         </ul>
         <div class="scoreboard">
           <div><b id="score">0</b><span>this round</span></div>
@@ -901,7 +901,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
   const show = id => document.getElementById(id);
   const phone = document.getElementById("phone");
   const isTouch = window.matchMedia("(pointer: coarse)").matches;
-  const ACT = isTouch ? "TAP" : "PRESS 5";
+  const goKey = document.getElementById("go-key");
+  const HINT = isTouch
+    ? { idle: "TAP START", paused: "TAP RESUME", over: "TAP PLAY AGAIN" }
+    : { idle: "PRESS SPACE TO START", paused: "PRESS SPACE TO GO ON", over: "PRESS SPACE TO PLAY" };
+  const GO_LABEL = { idle: "Start", playing: "Pause", paused: "Resume", over: "Play again" };
 
   // Pixel pictures drawn inside one 8x8 cell ("#" = dark pixel)
   const MOMO = ["..#..#..", "...##...", "..####..", ".######.", "########", ".######.", "........", "........"];
@@ -1008,6 +1012,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   function setState(next) {
     state = next;
     phone.classList.toggle("playing", state === "playing");
+    goKey.textContent = GO_LABEL[state];               // the orange key always says what it will do
   }
   function start() {
     reset(); draw();
@@ -1019,13 +1024,17 @@ document.getElementById("year").textContent = new Date().getFullYear();
     const r = phone.getBoundingClientRect();     // on a phone, bring the whole game into view
     if (isTouch && (r.top < 0 || r.bottom > innerHeight)) phone.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
   }
-  function pause() {
-    if (state === "playing") {
-      setState("paused"); clearTimeout(timer);
-      msg.innerHTML = `<div><big>PAUSED</big>${ACT} TO GO ON</div>`; msg.hidden = false;
-    } else if (state === "paused") {
-      setState("playing"); msg.hidden = true; timer = setTimeout(step, speed);
-    }
+  function pause(reason) {
+    if (state !== "playing") return;
+    setState("paused"); clearTimeout(timer);
+    msg.innerHTML = `<div><big>PAUSED</big>${HINT.paused}</div>`; msg.hidden = false;
+    show("quip").textContent = reason || "";
+  }
+  function resume() {
+    if (state !== "paused") return;
+    setState("playing"); msg.hidden = true;
+    show("quip").textContent = "";
+    timer = setTimeout(step, speed);
   }
   function gameOver() {
     setState("over"); clearTimeout(timer);
@@ -1036,7 +1045,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
       try { localStorage.setItem("ba-snake-best", best); } catch (e) {}
       show("best").textContent = best;
     }
-    msg.innerHTML = `<div><big>GAME OVER</big>${line}SCORE ${score}<br>${ACT} TO PLAY</div>`;
+    msg.innerHTML = `<div><big>GAME OVER</big>${line}SCORE ${score}<br>${HINT.over}</div>`;
     msg.hidden = false;
     show("quip").textContent = QUIPS[Math.floor(Math.random() * QUIPS.length)];
   }
@@ -1056,8 +1065,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
     else if (key === "8") turn(0, 1);
     else if (key === "4") turn(-1, 0);
     else if (key === "6") turn(1, 0);
-    else if (key === "5") (state === "playing" || state === "paused") ? pause() : start();
-    else if (key === "start") start();
+    else if (key === "go") { if (state === "playing") pause(); else if (state === "paused") resume(); else start(); }
+    else if (key === "5") { if (state === "paused") resume(); else if (state !== "playing") start(); }   // never pauses by accident
+    else if (key === "new") { if (state !== "playing") start(); }                                       // can't wipe a game mid-play
     else if (key === "sound") {
       sound = !sound;
       show("lcd-sound").textContent = sound ? "♪ ON" : "♪ OFF";
@@ -1103,17 +1113,17 @@ document.getElementById("year").textContent = new Date().getFullYear();
   });
 
   // Keyboard: only steals the arrow keys while a game is on screen
-  const KEYS = { ArrowUp: "2", w: "2", W: "2", ArrowDown: "8", s: "8", S: "8", ArrowLeft: "4", a: "4", A: "4", ArrowRight: "6", d: "6", D: "6", " ": "5", Enter: "5" };
+  const KEYS = { ArrowUp: "2", w: "2", W: "2", ArrowDown: "8", s: "8", S: "8", ArrowLeft: "4", a: "4", A: "4", ArrowRight: "6", d: "6", D: "6", " ": "go", Enter: "go" };
   let gameInView = false;
   window.addEventListener("keydown", e => {
     const key = KEYS[e.key];
     if (!key || e.target.closest("input, textarea, [role=tab]")) return;
-    if (state !== "playing" && key !== "5") return;          // arrows scroll the page when no game is running
-    if (key === "5" && !gameInView && state !== "playing") return;
+    if (state !== "playing" && key !== "go") return;         // arrows scroll the page when no game is running
+    if (key === "go" && !gameInView && state !== "playing") return;
     if (e.key === "Enter" && e.target.closest("a, button")) return;   // let Enter click links and buttons
     e.preventDefault();
     press(key);
-    const pad = document.querySelector(`.keypad [data-key="${key}"]`);
+    const pad = document.querySelector(`.phone [data-key="${key}"]`);
     if (pad) { pad.classList.add("hit"); setTimeout(() => pad.classList.remove("hit"), 110); }
   });
 
@@ -1126,26 +1136,26 @@ document.getElementById("year").textContent = new Date().getFullYear();
     anchor = { x: t.clientX, y: t.clientY }; swiped = false;
   }, { passive: true });
   phone.addEventListener("touchmove", e => {
-    if (!anchor) return;
     if (state === "playing") e.preventDefault();          // keep the page still while you play
+    if (!anchor) return;
     const t = e.touches[0], dx = t.clientX - anchor.x, dy = t.clientY - anchor.y;
     if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
     if (Math.abs(dx) > Math.abs(dy)) press(dx > 0 ? "6" : "4"); else press(dy > 0 ? "8" : "2");
     anchor = { x: t.clientX, y: t.clientY }; swiped = true;
   }, { passive: false });
   phone.addEventListener("touchend", e => {
-    if (anchor && !swiped && e.target.closest(".lcd") && state !== "playing") press("5");   // tap the screen to start
+    if (anchor && !swiped && e.target.closest(".lcd") && state !== "playing") press("go");   // tap the screen to start or resume
     anchor = null;
   });
 
-  // Pause when the game scrolls away or the tab is hidden
+  // Pause only when the game is completely off the screen, or you leave the page
   new IntersectionObserver(([entry]) => {
     gameInView = entry.isIntersecting;
-    if (!gameInView && state === "playing") pause();
-  }, { threshold: 0.35 }).observe(document.getElementById("phone"));
-  document.addEventListener("visibilitychange", () => { if (document.hidden && state === "playing") pause(); });
+    if (!gameInView) pause("Paused because the game scrolled off the screen.");
+  }, { threshold: 0 }).observe(phone);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) pause("Paused because you left the page."); });
 
-  if (isTouch) show("lcd-hint").textContent = "TAP TO START";
+  show("lcd-hint").textContent = HINT.idle;
   reset(); draw();
 })();
 </script>
