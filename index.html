@@ -153,6 +153,7 @@
     background: var(--saffron); animation: blink 1s steps(1) infinite;
   }
   @keyframes blink { 50% { opacity: 0; } }
+  @media (max-width: 359px) { .hello { font-size: 2.55rem; } }
   .hero-sub { margin: 1rem 0 0; color: var(--snow); font: 500 clamp(1.25rem, 2.2vw, 1.6rem)/1.3 var(--body); }
   .hero-desc { margin: 1.1rem 0 0; max-width: 34rem; font-size: 1.08rem; }
   .status { display: flex; gap: .6rem; align-items: baseline; margin: 1.1rem 0 0; font-size: .92rem; color: var(--mist-2); }
@@ -456,7 +457,7 @@
   <!-- ================= HOME ================= -->
   <section id="home" class="hero" aria-label="Introduction">
     <div>
-      <h1 class="hello" aria-label="hi, bidhan here."><span id="typed" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></h1>
+      <h1 class="hello" aria-label="Hi, Bidhan here!"><span id="typed" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></h1>
       <p class="hero-sub">Data &amp; Business Analyst</p>
       <p class="hero-desc">Finance background, MS in Business Analytics from WPI. I work mostly in SQL, Python, Excel and Power BI. From Pokhara, Nepal, now in Boston.</p>
       <p class="status">Open to analyst roles.</p>
@@ -728,7 +729,7 @@ const ANALYSES = [
    ===================================================================== */
 
 // ---------- Typed greeting ----------
-const greeting = "hi, bidhan here.";
+const greeting = "Hi, Bidhan here!";
 const typed = document.getElementById("typed");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (reduceMotion) {
